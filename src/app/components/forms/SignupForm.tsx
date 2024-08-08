@@ -1,6 +1,9 @@
 "use client";
 
 import Link from "next/link";
+import { useFormState } from "react-dom";
+import { registerUserAction } from "@/app/lib/actions";
+
 import {
   CardTitle,
   CardDescription,
@@ -9,18 +12,20 @@ import {
   CardFooter,
   Card,
 } from "@/components/ui/card";
+
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { registerUserAction } from "@/app/lib/actions";
-import { useFormState } from "react-dom";
-import { Button } from "@/components/ui/button";
+import { ZodErrors } from "@/app/components/custom/ZodErrors";
 
 const INITIAL_STATE = {
   data: null,
 };
+
 export function SignupForm() {
-    const [formState, formAction] = useFormState(registerUserAction, INITIAL_STATE);
-   
+  const [formState, formAction] = useFormState(registerUserAction,INITIAL_STATE);
+  // formState에는 registerUserAction함수의 pros인 prevState값이 담기고 formAction에는 registerUserAction 함수가 담긴다
+  /// 호출 후 return받는 formState값이 INITIAL_STATE 값에도 적용이 되는지??
+  console.log(formState);
   return (
     <div className="w-full max-w-md">
       <form action={formAction}>
@@ -39,8 +44,8 @@ export function SignupForm() {
                 name="username"
                 type="text"
                 placeholder="username"
-                required
               />
+              <ZodErrors error={formState?.zodErrors?.username} />
             </div>
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
@@ -49,8 +54,8 @@ export function SignupForm() {
                 name="email"
                 type="email"
                 placeholder="name@example.com"
-                required
               />
+              <ZodErrors error={formState?.zodErrors?.email} />
             </div>
 
             <div className="space-y-2">
@@ -60,12 +65,12 @@ export function SignupForm() {
                 name="password"
                 type="password"
                 placeholder="password"
-                required
               />
+              <ZodErrors error={formState?.zodErrors?.password} />
             </div>
           </CardContent>
           <CardFooter className="flex flex-col">
-            <Button className="w-full">Sign Up</Button>
+            <button className="w-full">Sign Up</button>
           </CardFooter>
         </Card>
         <div className="mt-4 text-center text-sm">
