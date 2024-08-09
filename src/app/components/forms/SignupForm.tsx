@@ -24,6 +24,7 @@ const INITIAL_STATE = {
 export function SignupForm() {
   const [formState, formAction] = useFormState(registerUserAction,INITIAL_STATE);
   // formState에는 registerUserAction함수의 pros인 prevState값이 담기고 formAction에는 registerUserAction 함수가 담긴다
+  // return받아서 값을 받아오면 해당 페이지는 리랜더링됨
   /// 호출 후 return받는 formState값이 INITIAL_STATE 값에도 적용이 되는지??
   console.log(formState);
   return (

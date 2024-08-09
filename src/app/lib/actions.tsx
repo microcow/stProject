@@ -1,6 +1,7 @@
 "use server";
 
 import { z } from "zod";
+import { registerUserService } from "../data/auth-service";
 
 const schemaRegister = z.object({
   username: z.string().min(3).max(20, {
@@ -16,7 +17,6 @@ const schemaRegister = z.object({
 
 export async function registerUserAction(prevState: any, formData: FormData) {
   console.log("Hello From Register User Action");
-  console.log(prevState);
  /* 상태 업데이트 시, React는 불변성을 유지하기 위해 이전 상태 객체를 복사하고 필요한 부분만 업데이트한다
     즉, 최초 registerUserAction 호출 시 prevState 객체의 data라는 변수의 값이 "ok"라는 문자열로 설정되었다고 가정하면,
     두번째 registerUserAction 호출 시 prevState 객체의 data값을 따로 건들지 않더라도 이전 상태를 유지하고 있기에 data값이 "ok" 문자열로 되어있음
@@ -29,6 +29,7 @@ export async function registerUserAction(prevState: any, formData: FormData) {
     password: formData.get("password"),
     email: formData.get("email"),
   });
+  console.log(validatedFields);
 
   if (!validatedFields.success) {
     console.log('success');
@@ -43,8 +44,29 @@ export async function registerUserAction(prevState: any, formData: FormData) {
     };
   }
 
-  return {
-    ...prevState,
-    data: "ok",
-  };
+  const responseData = await registerUserService(validatedFields.data);
+  console.log(responseData);
+
+  if (!responseData) {
+    return {
+      ...prevState,
+      strapiErrors: null,
+      zodErrors: null,
+      message: "Ops! Something went wrong. Please try again.",
+    };
+  }
+
+  if (responseData.error) {
+    return {
+      ...prevState,
+      strapiErrors: responseData.error,
+      zodErrors: null,
+      message: "Failed to Register.",
+    };
+  }
+
+  console.log("#############");
+  console.log("User Registered Successfully", responseData.jwt);
+  console.log("#############");
 }
+
