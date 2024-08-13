@@ -17,7 +17,7 @@ const schemaRegister = z.object({
   email: z.string().email({
     message: "Please enter a valid email address",
   }).optional().default('not@email.com'),
-});
+});//
 
 export async function registerUserAction(prevState: any, formData: FormData) {
   console.log("prevState", prevState);
