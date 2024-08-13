@@ -18,15 +18,16 @@ import { Input } from "@/components/ui/input";
 import { ZodErrors } from "@/app/components/custom/ZodErrors";
 
 const INITIAL_STATE = {
-  data: null,
+  data: null, //초기값 설정
 };
 
 export function SignupForm() {
   const [formState, formAction] = useFormState(registerUserAction,INITIAL_STATE);
-  // formState에는 registerUserAction함수의 pros인 prevState값이 담기고 formAction에는 registerUserAction 함수가 담긴다
+  // formState에는 INITIAL_STATE값이 담기고 formAction에는 registerUserAction 함수가 담긴다
   // return받아서 값을 받아오면 해당 페이지는 리랜더링됨
-  /// 호출 후 return받는 formState값이 INITIAL_STATE 값에도 적용이 되는지??
-  console.log(formState);
+  // 즉, 최초 SignupForm 실행 시 formState값은 null로 되어있고, <form action={formAction}>이 실행될 경우 return받는 값이 formState이 받음
+  /// 호출 후 return받는 formState값이 INITIAL_STATE 값에도 적용이 되는거 같음..(?)
+  console.log('formstate', formState);
   return (
     <div className="w-full max-w-md">
       <form action={formAction}>

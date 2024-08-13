@@ -6,7 +6,7 @@ interface RegisterUserProps {
 }
 
 interface LoginUserProps {
-  identifier: string;
+  username: string;
   password: string;
 }
 
@@ -28,8 +28,6 @@ export async function registerUserService(userData: RegisterUserProps) { // user
       cache: "no-cache",
     });
 
-console.log(response); // 토큰을 제대로 받아오는지?
-
     return response.json();
   } catch (error) {
     console.error("Registration Service Error:", error);
@@ -37,9 +35,10 @@ console.log(response); // 토큰을 제대로 받아오는지?
 }
 
 export async function loginUserService(userData: LoginUserProps) {
-  const url = new URL("/api/auth/local", baseUrl);
-
+  console.log('userdata', userData)
   try {
+  const url = new URL("/api/Signin", baseUrl);
+  
     const response = await fetch(url, {
       method: "POST",
       headers: {
@@ -48,7 +47,7 @@ export async function loginUserService(userData: LoginUserProps) {
       body: JSON.stringify({ ...userData }),
       cache: "no-cache",
     });
-
+console.log('aaaa');
     return response.json();
   } catch (error) {
     console.error("Login Service Error:", error);
