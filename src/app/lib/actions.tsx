@@ -29,7 +29,7 @@ export async function registerUserAction(prevState: any, formData: FormData) {
  */
 
   const validatedFields = schemaRegister.safeParse({
-    username: formData.get("username"),
+    username: formData.get("email"),
     password: formData.get("password"),
     email: formData.get("email"),
   });
@@ -107,8 +107,9 @@ export async function loginUserAction(prevState: any, formData: FormData) {
   }
 
   const responseData = await loginUserService(validatedFields.data);
-
+  //console.log(responseData)
   if (!responseData) {
+    console.log('error!!')
     return {
       ...prevState,
       strapiErrors: null,
@@ -118,6 +119,7 @@ export async function loginUserAction(prevState: any, formData: FormData) {
   }
 
   if (responseData.error) {
+    console.log('responseData.error', responseData.error)
     return {
       ...prevState,
       strapiErrors: responseData.error,
