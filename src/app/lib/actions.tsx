@@ -17,10 +17,9 @@ const schemaRegister = z.object({
   email: z.string().email({
     message: "Please enter a valid email address",
   }).optional().default('not@email.com'),
-});//
+});
 
 export async function registerUserAction(prevState: any, formData: FormData) {
-  console.log("prevState", prevState);
  /* 상태 업데이트 시, React는 불변성을 유지하기 위해 이전 상태 객체를 복사하고 필요한 부분만 업데이트한다
     즉, 최초 registerUserAction 호출 시 prevState 객체의 data라는 변수의 값이 "ok"라는 문자열로 설정되었다고 가정하면,
     두번째 registerUserAction 호출 시 prevState 객체의 data값을 따로 건들지 않더라도 이전 상태를 유지하고 있기에 data값이 "ok" 문자열로 되어있음
@@ -29,7 +28,7 @@ export async function registerUserAction(prevState: any, formData: FormData) {
  */
 
   const validatedFields = schemaRegister.safeParse({
-    username: formData.get("email"),
+    username: formData.get("username"),
     password: formData.get("password"),
     email: formData.get("email"),
   });
