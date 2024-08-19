@@ -6,6 +6,16 @@
 
 import { z } from "zod";
 import { loginUserService, registerUserService } from "../data/auth-service";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
+
+const config = {
+  maxAge: 60 * 60 * 24 * 7, // 1 week
+  path: "/",
+  domain: process.env.HOST ?? "localhost",
+  httpOnly: true, // httpOnly: true는 서버측에서만 value값을 불러올 수 있음
+  secure: process.env.NODE_ENV === "production",
+};
 
 const schemaRegister = z.object({
   username: z.string().min(3).max(20, {
@@ -67,10 +77,8 @@ export async function registerUserAction(prevState: any, formData: FormData) {
     };
   }
 
-  console.log("#############");
-  console.log("User Registered Successfully", responseData.jwt);
-  console.log("#############");
 }
+
 
 
 
@@ -124,8 +132,8 @@ export async function loginUserAction(prevState: any, formData: FormData) {
       message: "Failed to login.",
     };
   }
+  cookies().set("jwt", responseData.jwt, config); //쿠키 생성(서버에서 사용자 인증이 완료된 경우에만 실행될 수 있도록)
+  redirect("/dashboard");
 
-  console.log("#############");
-  console.log("User login Successfully", responseData.jwt);
-  console.log("#############");
+  const jwtToken = cookies().get('jwt');  // 유저 클라이언트에 저장된(생성된) 쿠키 정보 가져오는법
 }
