@@ -48,24 +48,22 @@ export async function registerUserAction(prevState: any, formData: FormData) {
   }
 
   const responseData = await registerUserService(validatedFields.data);
+  console.log(responseData)
+  
 
   if (!responseData) {
-    console.log('here error')
+    console.log('here error', '서버 응답 없음')
     return {
       ...prevState,
-      strapiErrors: null,
-      zodErrors: null,
       message: "Ops! Something went wrong. Please try again.",
     };
   }
 
-  if (responseData.error) {
-    console.log('here error2')
+  if (responseData.message) {
+    console.log('here error2', '서버 응답은 있지만 error발생')
     return {
       ...prevState,
-      strapiErrors: responseData.error,
-      zodErrors: null,
-      message: "Failed to Register.",
+      message: responseData.message, // responseData.message는 json형식임
     };
   }
 

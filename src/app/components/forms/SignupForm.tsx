@@ -3,6 +3,8 @@
 import Link from "next/link";
 import { useFormState } from "react-dom";
 import { registerUserAction } from "@/app/lib/actions";
+import { SubmitButton } from "@/app/components/custom/SubmitButton";
+
 
 import {
   CardTitle,
@@ -16,6 +18,7 @@ import {
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { ZodErrors } from "@/app/components/custom/ZodErrors";
+import { SignUpErrors } from "@/app/components/custom/SignUpErrors";
 
 const INITIAL_STATE = {
   data: null, //초기값 설정
@@ -72,7 +75,14 @@ export function SignupForm() {
             </div>
           </CardContent>
           <CardFooter className="flex flex-col">
-            <button className="w-full">Sign Up</button>
+           <SubmitButton className="w-full" text="Sign Up" loadingText="Loading" />
+            <SignUpErrors
+              error={{
+                message: formState?.message, // 서버 오류 메시지를 여기에 전달
+                name: "SignUpError", // 예시로 오류 이름 지정
+                status: formState?.status, // 상태 코드 등을 전달할 수 있습니다             
+              }}
+            />
           </CardFooter>
         </Card>
         <div className="mt-4 text-center text-sm">
