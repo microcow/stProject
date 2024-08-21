@@ -9,7 +9,7 @@ interface BoardProps {
   
   export async function CreateBoardService(Board: BoardProps) {
     const url = new URL("/api/CreateBoard", baseUrl);
-    const jwtToken = cookies().get('jwt'); // 쿠키 생성
+    const jwtToken = cookies().get('jwt'); // 쿠키 가져오기
 
     console.log(Board)
     try {

@@ -80,9 +80,6 @@ export async function registerUserAction(prevState: any, formData: FormData) {
 }
 
 
-
-
-
 const schema = z.object({
   username: z.string().min(3).max(20, {
     message: "Username must be between 3 and 20 characters",
@@ -132,7 +129,11 @@ export async function loginUserAction(prevState: any, formData: FormData) {
       message: "Failed to login.",
     };
   }
-  cookies().set("jwt", responseData.jwt, config); //쿠키 생성(서버에서 사용자 인증이 완료된 경우에만 실행될 수 있도록)
+  cookies().set("jwt", responseData.accessToken, config); // 서버에서 받은 토큰으로 쿠키를 생성하고 "jwt"라는 이름으로 저장 
+  /* ★ 서버측에서 토큰을 "accessToken"이라는 이름의 인스턴스 변수에 담아서 return하고 있기에 responseData.accessToken으로 토큰 값을 불러옴
+        만약 서버에서 토큰을"jwt" 라는 인스턴스 변수에 담았다면 responseData.jwt를 작성하면 됨*/
+  // 쿠키 생성은 서버에서 사용자 인증(로그인 등)이 완료된 경우에만 실행될 수 있도록 해야함
+
   redirect("/dashboard");
 
   const jwtToken = cookies().get('jwt');  // 유저 클라이언트에 저장된(생성된) 쿠키 정보 가져오는법
