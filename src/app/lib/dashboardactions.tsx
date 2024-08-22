@@ -19,7 +19,6 @@ export async function CreateBoardAction(prevState: any, formData: FormData) {
 };
 
    const responseData = await CreateBoardService(boardData);
-   console.log(responseData)
  
    if (!responseData) {
      console.log('here error', '서버 응답 없음')
@@ -29,13 +28,13 @@ export async function CreateBoardAction(prevState: any, formData: FormData) {
      };
    }
  
-   if (responseData.message) {
-     console.log('here error2', '서버 응답은 있지만 error발생')
+   if (responseData) {
      return {
-       ...prevState,
-       message: responseData.message, // responseData.message는 json형식임
+       message: responseData,
+       /* Next.js는 서버("user server")에서 클라이언트("user client")로 전달되는 데이터에 제한을 두고 있습니다. 서버에서 클라이언트로 객체를 전달할 때,
+        단순한 JSON 직렬화가 가능한 데이터 타입(예: 기본형 타입, 배열, 일반 객체 등)만 허용됩니다. 문자열은 허용되지만, Next.js의 특정 방식에서 데이터 구조가 맞지 않을 때 문제가 발생할 수 있습니다. */
      };
    }
-  redirect("/dashboard");
+  //redirect("/dashboard");
 
 }

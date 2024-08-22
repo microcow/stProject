@@ -13,7 +13,7 @@ const INITIAL_STATE = {
   
 export default function CreateBoard() {
     const [formState, formAction] = useFormState(CreateBoardAction,INITIAL_STATE);
-
+    console.log(formState.data)
     return (
         <div className="flex justify-center items-center min-h-screen"> {/*중앙에 배치되도록 설정*/}
            <form action={formAction}>

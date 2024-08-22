@@ -21,7 +21,7 @@ import { ZodErrors } from "@/app/components/custom/ZodErrors";
 import { SignUpErrors } from "@/app/components/custom/SignUpErrors";
 
 const INITIAL_STATE = {
-  data: null, //초기값 설정
+  data: null, //초기값 설정 //빈 값이더라도 초기값 설정은 필수
 };
 
 export function SignupForm() {
@@ -29,7 +29,7 @@ export function SignupForm() {
   // ★ formState에는 INITIAL_STATE값이 담기고 formAction에는 registerUserAction 함수가 담긴다
   // return받아서 값을 받아오면 해당 페이지는 리랜더링됨
   // 즉, 최초 SignupForm 실행 시 formState값은 null로 되어있고, <form action={formAction}>이 실행될 경우 return받는 값이 formState이 받음
-  /// 호출 후 return받는 formState값이 INITIAL_STATE 값에도 적용이 되는거 같음..(?)
+  /// 호출 후 return은 formState값이 받게 되지만, 그 값이 INITIAL_STATE에도 적용이 되는거 같음..(?)
   console.log('formstate', formState);
   return (
     <div className="w-full max-w-md">
@@ -78,7 +78,10 @@ export function SignupForm() {
            <SubmitButton className="w-full" text="Sign Up" loadingText="Loading" />
             <SignUpErrors
               error={{
-                message: formState?.message, // 서버 오류 메시지를 여기에 전달
+                message: formState?.message, // 서버 오류 메시지를 여기에 전달 
+                /* ★ 오류가 발생하면 registerUserAction 함수에서 다양한 값을 formState객체에 담아 return하는데 "message"라는 인스턴스 변수명에 담긴 내용을 보려면
+                      위처럼 formState.message 이렇게 registerUserAction함수에서 return해주는 인스턴스 변수 명 "message"을 동일하게 작성해야함
+                */
                 name: "SignUpError", // 예시로 오류 이름 지정
                 status: formState?.status, // 상태 코드 등을 전달할 수 있습니다             
               }}

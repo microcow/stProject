@@ -30,7 +30,7 @@ export async function registerUserService(userData: RegisterUserProps) { // user
     
       // 응답이 JSON 형식인지 확인
       const contentType = response.headers.get("Content-Type"); // 서버에서 return받은 값의 헤더의 값 중 Content-Type 속성을 확인(Content-Type은 응답의 콘텐츠가 어떤 형식으로 되어 있는지 나타내는 헤더)
-      if (contentType && contentType.includes("application/json")) { // contentType이 존재하고, contentType이 application/json이라면 JSON으로 return
+      if (contentType && contentType.includes("application/json")) { // contentType이 존재하고, contentType이 application/json이라면 JSON으로 return (서버에서 토큰을 생성하고 JSON형식으로 return해줌)
         return await response.json();
       } else {
         return response; // JSON이 아니면 response 자체를 반환

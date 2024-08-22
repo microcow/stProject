@@ -44,7 +44,7 @@ export async function registerUserAction(prevState: any, formData: FormData) {
   });
   console.log(validatedFields);
 
-  if (!validatedFields.success) {
+  if (!validatedFields.success) { // zod처리 되지 못했을 경우
     console.log('success');
     return {
      ...prevState,
@@ -58,8 +58,6 @@ export async function registerUserAction(prevState: any, formData: FormData) {
   }
 
   const responseData = await registerUserService(validatedFields.data);
-  console.log(responseData)
-  
 
   if (!responseData) {
     console.log('here error', '서버 응답 없음')
@@ -120,7 +118,8 @@ export async function loginUserAction(prevState: any, formData: FormData) {
     };
   }
 
-  if (responseData.error) {
+  if (responseData.error) { 
+    // 서버에서 에러가 발생했을 때, JSON 형식의 응답에 error 필드를 포함시켜 클라이언트에 전달한다면, 클라이언트는 이 값을 responseData.error로 접근할 수 있습니다.
     console.log('responseData.error', responseData.error)
     return {
       ...prevState,
