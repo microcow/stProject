@@ -10,15 +10,17 @@ type BoardProps = {
   contents: string;
 } | FormData;
 
+let errormessage = '';
+
 export async function CreateBoardAction(prevState: any, formData: FormData) {
   
    // 전달받은 FormData를 BoardProps로 변환
    const boardData: BoardProps = {
     title: formData.get('title') as string,
     contents: formData.get('contents') as string,
-};
+   };
 
-   const responseData = await CreateBoardService(boardData);
+  const responseData = await CreateBoardService(boardData);
  
    if (!responseData) {
      console.log('here error', '서버 응답 없음')
@@ -27,14 +29,28 @@ export async function CreateBoardAction(prevState: any, formData: FormData) {
        message: "Ops! Something went wrong. Please try again.",
      };
    }
- 
-   if (responseData) {
+
+   if (responseData.error) {  
+    /*글 작성 성공 시 서버에서 '문자열만을' return해주지만 error가 발생한 경우, 에러를 josn형태로 return하고 있고,
+     return받은 객체에는 .error와 .message와 .status 등으로 오류 내용을 클라이언트로 전달해줌 
+    */
+   console.log('오류', responseData)
+   
+        if(responseData.message.trim() == 'JWT strings must contain exactly 2 period characters. Found: 0') { // trim() : 공백을 제거하고 비교
+          errormessage = "Your session has expired. Please log in again."
+        } 
+        // 서버에서 return받는 오류 메시지 내용을 if문으로 검증해서 errormessage 내용을 상세하고 유연하게 다시 return
+        // 위 경우, 글작성 시 세션이 만료되었을 때 서버에서 json형태의 에러객체의 message 변수에 JWR stirng... 이런 내용을 보내줌
+        else
+          errormessage = "An unknown error occurred. Please try again."
+
      return {
-       message: responseData,
-       /* Next.js는 서버("user server")에서 클라이언트("user client")로 전달되는 데이터에 제한을 두고 있습니다. 서버에서 클라이언트로 객체를 전달할 때,
-        단순한 JSON 직렬화가 가능한 데이터 타입(예: 기본형 타입, 배열, 일반 객체 등)만 허용됩니다. 문자열은 허용되지만, Next.js의 특정 방식에서 데이터 구조가 맞지 않을 때 문제가 발생할 수 있습니다. */
+       message: errormessage,
      };
-   }
-  //redirect("/dashboard");
+  }
+
+ return {
+    message: responseData,
+ };
 
 }

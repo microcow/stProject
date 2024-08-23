@@ -62,7 +62,7 @@ export async function registerUserAction(prevState: any, formData: FormData) {
   if (!responseData) {
     console.log('here error', '서버 응답 없음')
     return {
-      ...prevState,
+      ...prevState, ////// ...prevState 값은 왜넘기는걸까?
       message: "Ops! Something went wrong. Please try again.",
     };
   }
@@ -133,7 +133,7 @@ export async function loginUserAction(prevState: any, formData: FormData) {
         만약 서버에서 토큰을"jwt" 라는 인스턴스 변수에 담았다면 responseData.jwt를 작성하면 됨*/
   // 쿠키 생성은 서버에서 사용자 인증(로그인 등)이 완료된 경우에만 실행될 수 있도록 해야함
 
-  redirect("/dashboard");
+  redirect("/dashboard"); // redirect는 next.js의 서버 컴포넌트에서만 사용가능
 
   const jwtToken = cookies().get('jwt');  // 유저 클라이언트에 저장된(생성된) 쿠키 정보 가져오는법
 }
