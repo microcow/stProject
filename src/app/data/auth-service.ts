@@ -24,7 +24,7 @@ export async function registerUserService(userData: RegisterUserProps) { // user
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(userData),
+      body: JSON.stringify(userData), // server에 전달할 값 userData
       cache: "no-cache",
     });
     

@@ -3,7 +3,7 @@
 import { loginUserService, registerUserService } from "../data/auth-service";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { CreateBoardService } from "../data/board-service";
+import { BoardDetailService, BoardListService, CreateBoardService } from "../data/board-service";
 
 type BoardProps = {
   title: string;
@@ -53,4 +53,16 @@ export async function CreateBoardAction(prevState: any, formData: FormData) {
     message: responseData,
  };
 
+}
+
+export async function BoardListAction() {
+  const responseData = await BoardListService();
+  return responseData
+
+}
+
+export async function BoardDetailAction(b_id : any) {
+  const responseData = await BoardDetailService(b_id);
+  console.log(responseData, "board")
+  return responseData
 }

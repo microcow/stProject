@@ -6,7 +6,6 @@ import { Input } from '@/components/ui/input';
 import { CreateBoardAction } from '@/app/lib/dashboardactions';
 import { useFormState } from "react-dom";
 import { BoardMessage } from "../custom/BoardMessage";
-import { redirect } from "next/navigation";
 
 const INITIAL_STATE = {
     data: null,

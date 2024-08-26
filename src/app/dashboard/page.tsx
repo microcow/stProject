@@ -7,7 +7,10 @@ export default function DashboardRoute() {
         <Link href="/dashboard/createboard">
          <Button className="mb-4">Create Board</Button>
         </Link>
+
+        <Link href="/dashboard/boardlist">
          <Button>Board List</Button>
+        </Link>
       </div>
     );
   }
