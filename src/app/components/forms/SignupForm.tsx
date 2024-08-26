@@ -30,7 +30,6 @@ export function SignupForm() {
   // return받아서 값을 받아오면 해당 페이지는 리랜더링됨
   // 즉, 최초 SignupForm 실행 시 formState값은 null로 되어있고, <form action={formAction}>이 실행될 경우 return받는 값이 formState이 받음
   /// 호출 후 return은 formState값이 받게 되지만, 그 값이 INITIAL_STATE에도 적용이 되는거 같음..(?)
-  console.log('formstate', formState);
   return (
     <div className="w-full max-w-md">
       <form action={formAction}> {/* 유저가 정보 입력 후 form이 제출되면 formAction 함수가 실행되며 입력 정보가 전달된다 */}

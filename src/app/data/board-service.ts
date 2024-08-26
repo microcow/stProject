@@ -78,15 +78,16 @@ interface BoardProps {
   export async function BoardDetailService(b_id : any) {
     const url = new URL("/api/BoardDetail", baseUrl);
     const jwtToken = cookies().get('jwt'); // 쿠키 가져오기
+    const bid = b_id.b_id // ★ b_id값은 객체로 전달되기에 값을 추출해주어야함!
 
     try {
       const response = await fetch(url, {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "text/plain", // 문자열을 전송하니 Content-Type 변경
           "Authorization": `Bearer ${jwtToken?.value}`, // 쿠키 전달
         },
-        body: JSON.stringify(b_id),
+        body: bid, // JSON.stringify(b_id) : { b_id = ?? } 이런 json 형태 대신 단순 문자열 전달
         cache: "no-cache",
       });
 

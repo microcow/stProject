@@ -24,14 +24,16 @@ export default function BoardList() {
     }, []);
     // [] : 이 배열이 비어있기 때문에 이 useEffect는 컴포넌트가 처음 렌더링될 때 한 번만 실행됩니다. 이후에는 다시 실행되지 않습니다.
     // 이 배열에 포함된 값 중 하나라도 변경되면 useEffect가 다시 실행됩니다.
-
     return (
         <div>
           {boardList.length > 0 ? ( // boardList에 항목이 있을 때만 실행
             <ul>
               {boardList.map((board: any,) => (          
                 <li key={board.b_id} style={{ marginBottom: '10px', listStyleType: 'none' }}> {/* ★ 경로로 이동하면서 query 객체에 있는 값이 URL의 쿼리 문자열로 추가됨. query 값은 useRouter 훅을 통해 접근가능*/}
-                  <Link href={{ pathname: '/boarddetail', query: { id: board.b_id } }}>
+                  {/*<Link href={{ pathname: '/boarddetail', query: { id: board.b_id } }}>
+                      ㄴ 쿼리에 값을 담아 보내는법*/}
+                  <Link href={`/dashboard/boardlist/${board.b_id}/boarddetail`}>
+                  {/* ㄴ next js의 동적라우팅[] 으로 값을 보내는 법*/}
                     <Button>{board.title}</Button>
                   </Link>
                 </li>     
