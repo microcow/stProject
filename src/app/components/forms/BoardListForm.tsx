@@ -32,8 +32,9 @@ export default function BoardList() {
                 <li key={board.b_id} style={{ marginBottom: '10px', listStyleType: 'none' }}> {/* ★ 경로로 이동하면서 query 객체에 있는 값이 URL의 쿼리 문자열로 추가됨. query 값은 useRouter 훅을 통해 접근가능*/}
                   {/*<Link href={{ pathname: '/boarddetail', query: { id: board.b_id } }}>
                       ㄴ 쿼리에 값을 담아 보내는법*/}
-                  <Link href={`/dashboard/boardlist/${board.b_id}/boarddetail`}>
-                  {/* ㄴ next js의 동적라우팅[] 으로 값을 보내는 법*/}
+                      
+                    <Link href={`/dashboard/boardlist/${board.b_id}/boarddetail`}>
+                  {/*ㄴ next js의 동적라우팅[] 으로 값을 보내는 법*/}
                     <Button>{board.title}</Button>
                   </Link>
                 </li>     

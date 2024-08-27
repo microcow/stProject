@@ -63,6 +63,5 @@ export async function BoardListAction() {
 
 export async function BoardDetailAction(b_id : any) {
   const responseData = await BoardDetailService(b_id);
-  console.log(responseData, "board")
   return responseData
 }

@@ -79,6 +79,7 @@ interface BoardProps {
     const url = new URL("/api/BoardDetail", baseUrl);
     const jwtToken = cookies().get('jwt'); // 쿠키 가져오기
     const bid = b_id.b_id // ★ b_id값은 객체로 전달되기에 값을 추출해주어야함!
+    console.log(bid, "bid")
 
     try {
       const response = await fetch(url, {
