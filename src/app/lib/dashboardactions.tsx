@@ -3,7 +3,7 @@
 import { loginUserService, registerUserService } from "../data/auth-service";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { BoardDetailService, BoardListService, CreateBoardService } from "../data/board-service";
+import { BoardDeleteService, BoardDetailService, BoardListService, CreateBoardService } from "../data/board-service";
 
 type BoardProps = {
   title: string;
@@ -12,6 +12,7 @@ type BoardProps = {
 
 let errormessage = '';
 
+// 글 작성
 export async function CreateBoardAction(prevState: any, formData: FormData) {
   
    // 전달받은 FormData를 BoardProps로 변환
@@ -55,13 +56,46 @@ export async function CreateBoardAction(prevState: any, formData: FormData) {
 
 }
 
+// 글 목록
 export async function BoardListAction() {
   const responseData = await BoardListService();
   return responseData
 
 }
 
+// 글 상세
 export async function BoardDetailAction(b_id : any) {
   const responseData = await BoardDetailService(b_id);
   return responseData
+}
+
+// 글 삭제
+export async function BoardDeleteAction(b_id : any) {
+
+  console.log("세번째")
+const responseData = await BoardDeleteService(b_id);
+
+console.log(responseData, "글삭제")
+
+  if (!responseData) {
+    console.log('here error', '서버 응답 없음')
+    return {
+      message: "Ops! Something went wrong. Please try again.",
+    };
+  }
+  if (responseData.error) {  
+  console.log('오류', responseData)
+       if(responseData.message.trim() == 'JWT strings must contain exactly 2 period characters. Found: 0') {
+         errormessage = "Your session has expired. Please log in again."
+       } 
+       else
+         errormessage = "An unknown error occurred. Please try again."
+    return {
+      message: errormessage,
+    };
+ }
+return {
+   responseData,
+};
+
 }

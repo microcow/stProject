@@ -79,7 +79,6 @@ interface BoardProps {
     const url = new URL("/api/BoardDetail", baseUrl);
     const jwtToken = cookies().get('jwt'); // 쿠키 가져오기
     const bid = b_id.b_id // ★ b_id값은 객체로 전달되기에 값을 추출해주어야함!
-    console.log(bid, "bid")
 
     try {
       const response = await fetch(url, {
@@ -89,6 +88,38 @@ interface BoardProps {
           "Authorization": `Bearer ${jwtToken?.value}`, // 쿠키 전달
         },
         body: bid, // JSON.stringify(b_id) : { b_id = ?? } 이런 json 형태 대신 단순 문자열 전달
+        cache: "no-cache",
+      });
+
+        const contentType = response.headers.get("Content-Type"); 
+
+        if((contentType && contentType.includes("application/json"))){
+          return await response.json(); // json 형태로 return되면 json으로 return (★ 오류발생 시 서버에서 json형태로 보내줌)
+        }
+        else {
+          return response;
+       }
+       
+      } catch (error) {
+      console.error("Registration Service Error:", error);
+      return null; 
+    }
+  }
+
+  export async function BoardDeleteService(b_id : any) {
+    const url = new URL("/api/BoardDelete", baseUrl);
+    const jwtToken = cookies().get('jwt'); // 쿠키 가져오기
+    const bid = b_id.b_id
+
+    console.log("네번째")
+    try {
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "text/plain",
+          "Authorization": `Bearer ${jwtToken?.value}`, // 쿠키 전달
+        },
+        body: bid,
         cache: "no-cache",
       });
 

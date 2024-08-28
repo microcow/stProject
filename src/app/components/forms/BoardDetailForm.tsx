@@ -17,7 +17,13 @@ interface Board {
 
 
 export default function BoardDetailForm(b_id : any) {
-  const [board, setBoard] = useState<Board | null>(null);
+  const [board, setBoard] = useState<Board | null>(null); 
+  // Board | null: 이 부분은 상태 변수(result)의 타입을 지정 (any로 해도됨)
+  /* ★ 타입을 Board와 any로 했을 때 차이
+  Board로 하게되면 위에서 타입을 선언한 Board 인터페이스에 있는 인스턴스 변수만 board.title 이런 식으로 사용 가능하고
+  타입을 선언하지 않은 없는 인스턴스 변수를 board.message 이런식으로 사용하면 타입 검사에서 오류가 발생함
+  근데 타입을 any로 지정하면 TypeScript의 타입 검사가 사실상 비활성화되므로 board.message 이런식으로 적어도 타입 검사에서 오류가 발생안함
+  */
 
     useEffect(() => { 
       async function fetchData() {
@@ -45,6 +51,9 @@ export default function BoardDetailForm(b_id : any) {
            <div>
             <Link href={'/dashboard/boardlist'}>
               <Button>돌아가기</Button>
+            </Link>
+            <Link href={`/dashboard/boardlist/${b_id.b_id}/boarddetail/boarddelete`}>
+              <Button>삭제하기</Button>
             </Link>
           </div>
       </div>

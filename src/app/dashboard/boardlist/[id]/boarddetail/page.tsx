@@ -16,8 +16,6 @@ export default function boarddetail(id : any) { // 동적 라우트로 id값을 
   // const b_id = params.id ? String(params.id) : null; // 현재 페이지 next js 동적 라우트에서 [id] 값을 추출 (next 네비게이션의 useParams 써서 추출하는법)
   
   const b_id = String(id.params.id) // next js 동적 라우트 값 추출방법 2. : [] 안의 값을 해당 페이지의 파라미터로 전달받아 추출
-  
-  console.log(id, "b_id")
   return  <BoardDetailForm b_id={b_id}/>
 
   
