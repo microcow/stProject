@@ -71,11 +71,8 @@ export async function BoardDetailAction(b_id : any) {
 
 // 글 삭제
 export async function BoardDeleteAction(b_id : any) {
-
-  console.log("세번째")
 const responseData = await BoardDeleteService(b_id);
 
-console.log(responseData, "글삭제")
 
   if (!responseData) {
     console.log('here error', '서버 응답 없음')
@@ -94,6 +91,7 @@ console.log(responseData, "글삭제")
       message: errormessage,
     };
  }
+ console.log(responseData, "글 삭제 return")
 return {
    responseData,
 };

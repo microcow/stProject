@@ -110,8 +110,6 @@ interface BoardProps {
     const url = new URL("/api/BoardDelete", baseUrl);
     const jwtToken = cookies().get('jwt'); // 쿠키 가져오기
     const bid = b_id.b_id
-
-    console.log("네번째")
     try {
       const response = await fetch(url, {
         method: "POST",
