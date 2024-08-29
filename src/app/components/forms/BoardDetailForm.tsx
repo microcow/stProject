@@ -59,7 +59,7 @@ export default function BoardDetailForm(b_id : any) {
             </Link>
             */}
 
-            <form action="/dashboard/boardreply" method="POST"> {/*답글달기 post 방식 */}
+            <form action="/api/dashboard/boardreply" method="POST"> {/*답글달기 post 방식 */}
               <input type="hidden" name="b_id" value={b_id.b_id} />
               <input type="hidden" name="title" value={board.Board.title} />
               <Button type="submit">답글달기</Button>
