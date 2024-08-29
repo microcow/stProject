@@ -89,7 +89,6 @@ const schema = z.object({
 
 
 export async function loginUserAction(prevState: any, formData: FormData) {
-  console.log("Hello From loginUserAction");
 
   const validatedFields = schema.safeParse({
     username: formData.get("username"),

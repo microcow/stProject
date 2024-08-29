@@ -7,19 +7,18 @@ interface BoardMessagesProps {
   message: string | null;
   name: string;
   status: string | null;
+  redirect: any;
 }
 
 let redirect = ""; // const로 변수 선언 시 재할당이 불가능
 
 export function BoardMessage({ message }: { readonly message: BoardMessagesProps }) {
-  
-console.log(message, "sdfsdfdssf")
 
  if (!message?.message) return null;
 
  else
     if(message.message == "Complete!"){
-        redirect = "/dashboard"
+        redirect = message.redirect // "Complete!"일 경우 호출하는 쪽에서 redirect 주소 결정
     }
     else redirect = "/signin"
 

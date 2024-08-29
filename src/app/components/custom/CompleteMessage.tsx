@@ -11,7 +11,6 @@ let redirect = ""; // const로 변수 선언 시 재할당이 불가능
 
 export function CompleteMessage({ message }: { readonly message: MessagesProps }) {
   
-console.log(message, "sdfsdfdssf")
 
  if (!message?.result) return null;
 

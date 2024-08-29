@@ -3,7 +3,7 @@
 import { loginUserService, registerUserService } from "../data/auth-service";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { BoardDeleteService, BoardDetailService, BoardListService, CreateBoardService } from "../data/board-service";
+import { BoardDeleteService, BoardDetailService, BoardListService, ChangeBoardService, CreateBoardService } from "../data/board-service";
 
 type BoardProps = {
   title: string;
@@ -91,9 +91,45 @@ const responseData = await BoardDeleteService(b_id);
       message: errormessage,
     };
  }
- console.log(responseData, "글 삭제 return")
 return {
    responseData,
+};
+
+}
+
+export async function ChangeBoardAction(prevState: any, formData: FormData) {
+  const boardData: any = {
+   title: formData.get('title') as string,
+   contents: formData.get('contents') as string,
+   b_id: formData.get('b_id') as string,
+  };
+
+ const responseData = await ChangeBoardService(boardData);
+
+  if (!responseData) {
+    console.log('here error', '서버 응답 없음')
+    return {
+      ...prevState,
+      message: "Ops! Something went wrong. Please try again.",
+    };
+  }
+
+  if (responseData.error) {  
+  console.log('오류', responseData)
+  
+       if(responseData.message.trim() == 'JWT strings must contain exactly 2 period characters. Found: 0') {
+         errormessage = "Your session has expired. Please log in again."
+       } 
+       else
+         errormessage = "An unknown error occurred. Please try again."
+
+    return {
+      message: errormessage,
+    };
+ }
+
+return {
+   message: responseData,
 };
 
 }

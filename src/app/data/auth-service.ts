@@ -14,7 +14,6 @@ const baseUrl = "http://localhost:8888";
 
 export async function registerUserService(userData: RegisterUserProps) { // userData: RegisterUserProps 이렇게 유저 정보 받으면 값이 자동으로 매칭되는지?
   const url = new URL("/api/Signup", baseUrl);
-  console.log(userData)
   try {
     const response = await fetch(url, { 
         // 이 과정에서 백엔드에 정보를 요청한 후 데이터를 받아옴(fetch 함수)
@@ -45,7 +44,6 @@ export async function registerUserService(userData: RegisterUserProps) { // user
 }
 
 export async function loginUserService(userData: LoginUserProps) {
-  console.log('userdata', userData)
   try {
   const url = new URL("/api/Signin", baseUrl);
   
