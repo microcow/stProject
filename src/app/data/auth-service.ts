@@ -23,7 +23,7 @@ export async function registerUserService(userData: RegisterUserProps) { // user
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(userData), // server에 전달할 값 userData
+      body: JSON.stringify(userData), // server에 전달할 값 userData (JSON.stringify : json 형식으로 전달)
       cache: "no-cache",
     });
     
@@ -44,6 +44,7 @@ export async function registerUserService(userData: RegisterUserProps) { // user
 }
 
 export async function loginUserService(userData: LoginUserProps) {
+  console.log(userData, " 유저 데이터 ")
   try {
   const url = new URL("/api/Signin", baseUrl);
   

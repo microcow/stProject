@@ -7,18 +7,32 @@ interface BoardProps {
   
   const baseUrl = "http://localhost:8888";
   
-  export async function CreateBoardService(Board: BoardProps) {
+  export async function CreateBoardService(Board: BoardProps, images: File[]) {
     const url = new URL("/api/CreateBoard", baseUrl);
     const jwtToken = cookies().get('jwt'); // 쿠키 가져오기
+
+     // FormData 객체 생성(이미지와 다른 폼 데이터를 함께 전송하려면 FormData 객체를 사용해야 합니다.)
+     const formData = new FormData();
+
+     // 텍스트 데이터 추가
+     formData.append('title', Board.title);
+     formData.append('contents', Board.contents);
+ 
+     // 이미지 파일 추가
+     images.forEach((image, index) => {
+         formData.append(`images`, image);
+     });
+
+     console.log(formData, "보내지는 formData")
 
     try {
       const response = await fetch(url, {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
+          // "Content-Type": "application/json", // 헤더를 설정하지 않음, FormData는 자동으로 올바른 Content-Type을 설정함
           "Authorization": `Bearer ${jwtToken?.value}`, // 쿠키 전달
         },
-        body: JSON.stringify(Board),
+        body: formData, // formData 형식으로 전송
         cache: "no-cache",
       });
 
@@ -138,6 +152,41 @@ interface BoardProps {
 
   export async function ChangeBoardService(Board: any) {
     const url = new URL("/api/ChangeBoard", baseUrl);
+    const jwtToken = cookies().get('jwt'); // 쿠키 가져오기
+
+    try {
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${jwtToken?.value}`, // 쿠키 전달
+        },
+        body: JSON.stringify(Board), // Board를 JSON 문자열로 변환하여 서버로 전송
+        cache: "no-cache",
+      });
+
+        const contentType = response.headers.get("Content-Type"); 
+
+        if (contentType && contentType.includes("text/plain;charset=UTF-8")) {
+          const message = await response.text(); 
+          return message;
+        } 
+        else if((contentType && contentType.includes("application/json"))){
+          return await response.json();
+        }
+
+        else {
+          return response;
+       }
+       
+      } catch (error) {
+      console.error("Registration Service Error:", error);
+      return null; 
+    }
+  }
+
+  export async function ReplyBoardService(Board: any) {
+    const url = new URL("/api/ReplyBoard", baseUrl);
     const jwtToken = cookies().get('jwt'); // 쿠키 가져오기
 
     try {

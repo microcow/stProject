@@ -3,7 +3,7 @@
 import { loginUserService, registerUserService } from "../data/auth-service";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { BoardDeleteService, BoardDetailService, BoardListService, ChangeBoardService, CreateBoardService } from "../data/board-service";
+import { BoardDeleteService, BoardDetailService, BoardListService, ChangeBoardService, CreateBoardService, ReplyBoardService } from "../data/board-service";
 
 type BoardProps = {
   title: string;
@@ -21,7 +21,11 @@ export async function CreateBoardAction(prevState: any, formData: FormData) {
     contents: formData.get('contents') as string,
    };
 
-  const responseData = await CreateBoardService(boardData);
+   // 이미지 파일 추출
+  const images: File[] = formData.getAll('images') as File[];
+
+  const responseData = await CreateBoardService(boardData, images); 
+  //board 데이터와 이미지를 같이 전달 (어차피 서버로 보낼때 이미지파일과 폼데이터를 FormData 형식으로 보내야하기에 여기서 boardData와 images를 하나의 FormData로 합쳐서 CreateBoardService로 보내도 됨)
  
    if (!responseData) {
      console.log('here error', '서버 응답 없음')
@@ -105,6 +109,43 @@ export async function ChangeBoardAction(prevState: any, formData: FormData) {
   };
 
  const responseData = await ChangeBoardService(boardData);
+
+  if (!responseData) {
+    console.log('here error', '서버 응답 없음')
+    return {
+      ...prevState,
+      message: "Ops! Something went wrong. Please try again.",
+    };
+  }
+
+  if (responseData.error) {  
+  console.log('오류', responseData)
+  
+       if(responseData.message.trim() == 'JWT strings must contain exactly 2 period characters. Found: 0') {
+         errormessage = "Your session has expired. Please log in again."
+       } 
+       else
+         errormessage = "An unknown error occurred. Please try again."
+
+    return {
+      message: errormessage,
+    };
+ }
+
+return {
+   message: responseData,
+};
+
+}
+
+export async function ReplyBoardAction(prevState: any, formData: FormData) {
+  const boardData: any = {
+   title: formData.get('title') as string,
+   contents: formData.get('contents') as string,
+   p_board: formData.get('b_id') as string, // 전달받는 b_id값은 부모게시글이니까 서버에 답글의 p_board값으로 전달될 수 있께 p_board로 추출 
+  };
+
+ const responseData = await ReplyBoardService(boardData);
 
   if (!responseData) {
     console.log('here error', '서버 응답 없음')

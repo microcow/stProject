@@ -4,7 +4,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import Link from 'next/link';
 import { useFormState } from 'react-dom';
-import { ChangeBoardAction } from '@/app/lib/dashboardactions';
+import { ChangeBoardAction, ReplyBoardAction } from '@/app/lib/dashboardactions';
 import { BoardMessage } from '../custom/BoardMessage';
 
 
@@ -12,8 +12,8 @@ const INITIAL_STATE = {
     data: null,
   };
   
-export default function ReplyBoard(b_id: any, title: any) {
-    const [formState, formAction] = useFormState(ChangeBoardAction, INITIAL_STATE,);
+export default function BoardReply(b_id: any) {
+    const [formState, formAction] = useFormState(ReplyBoardAction, INITIAL_STATE,);
 
     return (
         <div className="flex justify-center items-center min-h-screen"> {/*중앙에 배치되도록 설정*/}
@@ -43,9 +43,9 @@ export default function ReplyBoard(b_id: any, title: any) {
               <BoardMessage
               message={{
                 message: formState?.message, 
-                name: "BoardCreateMessage",
+                name: "BoardReplyMessage",
                 status: formState?.status,
-                redirect: `/dashboard/boardlist/${b_id.b_id}/boarddetail`
+                redirect: `/dashboard/boardlist`
             }}>
               </BoardMessage>
           </form>
