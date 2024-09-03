@@ -19,9 +19,13 @@ interface BoardProps {
      formData.append('contents', Board.contents);
  
      // 이미지 파일 추가
-     images.forEach((image, index) => {
+     if (images.some((image: File) => image.size > 0)) { 
+      // some : 배열의 각 요소에 대해 제공된 콜백 함수를 실행. 콜백 함수가 true를 반환하는 요소가 하나라도 있으면 some 메서드는 true를 반환합니다. 그렇지 않으면 false를 반환합니다.
+      // images의 요소들을 image에 대입한 다음 image의 요소 중 .size가 0보다 클 때만(첨부 이미지가 있을때만) 아래 코드 실행
+      images.forEach((image, index) => {
          formData.append(`images`, image);
-     });
+      });
+    }
 
      console.log(formData, "보내지는 formData")
 
