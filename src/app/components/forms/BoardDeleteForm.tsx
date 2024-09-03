@@ -23,8 +23,6 @@ export default function BoardDeleteForm(b_id : any) {
       return <div>Loading...</div>;
   }
 
-  console.log(result.responseData.result, "결과")
-
   return <div className="fixed top-0 left-0 w-full bg-gray-800 text-white text-center py-4 z-50">
       <div className="max-w-md mx-auto">
         <p className="mb-4">{result.responseData.result}</p>

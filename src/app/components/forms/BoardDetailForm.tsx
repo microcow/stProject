@@ -1,9 +1,12 @@
 "use client";
 
+import { CreateCommentAction } from '@/app/lib/commentactions';
 import { BoardDetailAction,} from '@/app/lib/dashboardactions';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
+import { useFormState } from 'react-dom';
   
 interface Board {
   title : String,
@@ -15,26 +18,43 @@ interface Board {
   grpord : Number,
 }
 
+interface Comment {
+  r_id: number,
+  b_id: number,
+  contents: string,
+  name: string,
+  p_board : Number,
+  depth : Number,
+  grpord : Number,
+}
 
-export default function BoardDetailForm(b_id : any) {
+const INITIAL_STATE = {
+  data: null,
+};
+
+export default function BoardDetailForm(b_id : any,) {
+  const [formState, formAction] = useFormState(CreateCommentAction,INITIAL_STATE); // 댓글
+  
+
   const [board, setBoard] = useState<any | null>(null); 
-  // Board | null: 이 부분은 상태 변수(result)의 타입을 지정 (any로 해도됨)
-  /* ★ 타입을 Board와 any로 했을 때 차이
-  Board로 하게되면 위에서 타입을 선언한 Board 인터페이스에 있는 인스턴스 변수만 board.title 이런 식으로 사용 가능하고
-  타입을 선언하지 않은 없는 인스턴스 변수를 board.message 이런식으로 사용하면 타입 검사에서 오류가 발생함
-  근데 타입을 any로 지정하면 TypeScript의 타입 검사가 사실상 비활성화되므로 board.message 이런식으로 적어도 타입 검사에서 오류가 발생안함
-  */
     useEffect(() => { 
       async function fetchData() {
         const result = await BoardDetailAction(b_id);
-        setBoard(result);        
+        setBoard(result); // BoardDetailAction실행 후 return받은 값을 board객체에 세팅     
       }
       fetchData();
-    }, [b_id]);
+    }, [formState]); 
+    /* ★ formState의 값(댓글작성)이 변경되면 BoardDetailAction이 재실행됨(AJAX)
+          즉, formAction을 실행하고 formState값이 변경되면(=응답을 받으면) 새로고침하지 않고 댓글 목록이 갱신됨
+          > 이렇게 하는 이유는 댓글 목록과 댓글 작성(CreateBoard)은 다르게 동작하기 때문.
+          댓글 목록을 불러오기 위해선 게시글 상세(BoardDetail)를 불러와야하고,
+          게시글 상세는 useEffect를 사용하고 있지만 댓글 작성은 useFormState를 작성하고 있기 때문에,
+          댓글 작성 후 댓글 목록을 즉시 최신화 하기 위해선 useEffect가 useFormState의 결과값(formState)이 갱신될때마다 실행되도록 해야함
+          
+    */
 
     console.log(board, "board") 
     ///? ㄴ 이렇게 값을 찍어도 빈값(null)로 나오지만 실제론 값이 있어서 아래 return 코드에 잘 출력됨 / 그리고 페이지 최초 로딩때는 출력안되고 새로고침해야 콘솔로그가 출력됨 왜?? (비동기 관련때문인듯)
-
 
     if (!board) {
       return <div>Loading...</div>;
@@ -44,7 +64,8 @@ export default function BoardDetailForm(b_id : any) {
   return (
       <div style={{ padding: '20px', border: '1px solid #ddd', borderRadius: '5px', maxWidth: '600px', margin: '0 auto' }}>
           <h2 style={{ borderBottom: '1px solid #ccc', paddingBottom: '10px' }}>{board.Board.title}</h2>
-          <p><strong>작성자:</strong> {board.Board.name}</p>
+          <p>작성자: {board.Board.name}</p>
+          <span>작성일: {new Date(board.Board.b_datetime).toLocaleString()}</span> {/* 작성날짜 출력 */}
           <div style={{ marginTop: '20px', whiteSpace: 'pre-wrap' }}>
               {board.Board.contents}
           </div>
@@ -78,7 +99,36 @@ export default function BoardDetailForm(b_id : any) {
             )}
 
           </div>
+       {/* Reply Form and Comments Section*/}
+       <div style={{ marginTop: '40px' }}>
+        <h2>댓글</h2>
+        {board.Reply.length > 0 ? ( // board.Reply가 배열이니 .length로 길이를 비교해야함
+          board.Reply.map((comment: any) => (
+            <div key={comment.r_id} style={{ padding: '10px', borderBottom: '1px solid #ddd' }}>
+              <p>작성자: <strong>{comment.r_writer}</strong> </p>
+              <p>{comment.r_content}</p>
+            </div>
+          ))
+        ) : (
+          <p>댓글이 없습니다.</p>
+        )}
       </div>
-      
+
+      <form action={formAction} style={{ marginTop: '20px' }}>
+          <Input 
+                placeholder="댓글을 입력하세요." 
+                id="content"
+                name="content"
+              />
+         <Input 
+                    type="hidden" // b_id값은 안보이게 전달
+                    id="b_id"
+                    name="b_id"
+                    value={b_id.b_id}
+                />
+        <Button type="submit" style={{ marginTop: '10px' }}>댓글 달기</Button>
+      </form>
+      {formState?.message}
+    </div>
   );
 }
