@@ -106,7 +106,7 @@ export async function loginUserAction(prevState: any, formData: FormData) {
   }
 
   const responseData = await loginUserService(validatedFields.data);
-  console.log(responseData.accessToken, "서버에서 전달받은 쿠키")
+  console.log(responseData.accessToken, "서버에서 전달받은 쿠키1")
   
   if (!responseData) {
     console.log('error!!')
