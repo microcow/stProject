@@ -12,7 +12,7 @@ import { redirect } from "next/navigation";
 const config = {
   maxAge: 60 * 60 * 24 * 7, // 1 week
   path: "/",
-  domain: process.env.HOST ?? "localhost",
+  // domain: process.env.HOST ?? "localhost",
   httpOnly: true, // httpOnly: true는 서버측에서만 value값을 불러올 수 있음
   secure: process.env.NODE_ENV === "production" && process.env.PROTOCOL === "https", // HTTPS 환경에서만 secure 활성화
 };
@@ -106,7 +106,8 @@ export async function loginUserAction(prevState: any, formData: FormData) {
   }
 
   const responseData = await loginUserService(validatedFields.data);
-  console.log(responseData, "서버에서 전달받은 쿠키")
+  console.log(responseData.accessToken, "서버에서 전달받은 쿠키")
+  
   if (!responseData) {
     console.log('error!!')
     return {
