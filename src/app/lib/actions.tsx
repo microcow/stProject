@@ -14,7 +14,7 @@ const config = {
   path: "/",
   domain: process.env.HOST ?? "localhost",
   httpOnly: true, // httpOnly: true는 서버측에서만 value값을 불러올 수 있음
-  secure: process.env.NODE_ENV === "production",
+  secure: process.env.NODE_ENV === "production" && process.env.PROTOCOL === "https", // HTTPS 환경에서만 secure 활성화
 };
 
 const schemaRegister = z.object({
