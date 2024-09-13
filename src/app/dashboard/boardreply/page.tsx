@@ -8,7 +8,7 @@ import { useSearchParams } from 'next/navigation';
 // (함께 사용할 수 없는진 추가 확인 필요) 아마 동적 라우팅에서는 useSearchParams 훅을 못쓰는걸로 암
 
 function BoardreplyContent() {
-    const searchParams = useSearchParams();
+    const searchParams = useSearchParams(); //useSearchParams으로 현재 URL의 쿼리 가져오기
     const b_id = searchParams.get('b_id');
     const title = searchParams.get('title'); // title값은 쓰이지 않는데 해당 페이지를 호출할 때 Post로 값 불러오기 연습
   
