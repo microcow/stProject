@@ -12,7 +12,7 @@ import { redirect } from "next/navigation";
 const config = {
   maxAge: 60 * 60 * 24 * 7, // 1 week
   path: "/",
-  domain: process.env.HOST ?? "13.124.150.61", // 작동 환경에 따라 domain을 주석처리하거나 "localhsot" 혹은 "실행 환경IP"로 변경해주어야 토큰이 정상 발급됨 (개발 환경에서는 "localhost"로 변경해주어야 됨)
+  domain: process.env.HOST ?? "13.124.150.61", // ★ 작동 환경에 따라 domain을 주석처리하거나 "localhsot" 혹은 "실행 환경IP"로 변경해주어야 토큰이 정상 발급됨 (개발 환경에서는 "localhost"로 변경해주어야 됨)
   httpOnly: true, // httpOnly: true는 서버측에서만 value값을 불러올 수 있음
   secure: process.env.NODE_ENV === "production" && process.env.PROTOCOL === "https", // HTTPS 환경에서만 secure 활성화
 };
